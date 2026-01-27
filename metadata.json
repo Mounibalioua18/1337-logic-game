@@ -1,0 +1,5 @@
+{
+  "name": "1337/42 Logic Test",
+  "description": "A grid-based logic puzzle game inspired by 1337/42 tests, featuring 25 levels, conditional programming, and recursive helper functions.",
+  "requestFramePermissions": []
+}
