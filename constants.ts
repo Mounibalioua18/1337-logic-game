@@ -35,123 +35,76 @@ export const LEVELS: Level[] = [
     start: [1, 1, Direction.RIGHT],
     stars: [[1, 4]],
     functionLimits: [5, 0, 0, 0, 0],
-    instructions: { en: "Move forward to collect the star.", fr: "Avancez pour collecter l'étoile." },
+    instructions: { en: "Warm up: Move forward.", fr: "Échauffement : Avancez." },
     solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
   },
   {
     id: 2,
     grid: createGrid(6, 6, `
       WWWWWW
-      WWWWWW
+      WGGGGW
+      WGWGWW
       WGGGGW
       WWWWWW
       WWWWWW
-      WWWWWW
     `),
-    start: [2, 4, Direction.LEFT],
-    stars: [[2, 1]],
-    functionLimits: [5, 0, 0, 0, 0],
-    instructions: { en: "The direction matters.", fr: "La direction est importante." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
+    start: [1, 1, Direction.RIGHT],
+    stars: [[3, 1]],
+    functionLimits: [10, 0, 0, 0, 0],
+    instructions: { en: "Zig and zag.", fr: "Ziguez et zaguez." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
   },
   {
     id: 3,
     grid: createGrid(6, 6, `
       WWWWWW
-      WGWWWW
-      WGWWWW
+      WGBGGW
+      WGWGWW
       WGGGGW
       WWWWWW
       WWWWWW
     `),
-    start: [1, 1, Direction.DOWN],
-    stars: [[3, 4]],
-    functionLimits: [8, 0, 0, 0, 0],
-    instructions: { en: "Turn left to follow the path.", fr: "Tournez à gauche pour suivre le chemin." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
+    start: [1, 1, Direction.RIGHT],
+    stars: [[3, 1]],
+    functionLimits: [5, 0, 0, 0, 0],
+    instructions: { en: "Use BLUE to turn right automatically.", fr: "Utilisez le BLEU pour tourner à droite automatiquement." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'FORWARD', condition: null }] }
   },
   {
     id: 4,
     grid: createGrid(6, 6, `
       WWWWWW
-      WGBGGW
+      WRGGGW
       WGWGWW
-      WGWGWW
+      WGKGGW
       WWWWWW
       WWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[3, 3]],
-    functionLimits: [8, 8, 0, 0, 0],
-    instructions: { en: "Blue logic: if on blue, turn right.", fr: "Logique bleue : si sur bleu, tournez à droite." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }]
-    }
+    functionLimits: [6, 0, 0, 0, 0],
+    instructions: { en: "Red for Right, Green for Left.", fr: "Rouge pour Droite, Vert pour Gauche." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'RED' }, { action: 'LEFT', condition: 'GREEN' }] }
   },
   {
     id: 5,
-    grid: createGrid(6, 6, `
-      WWWWWW
-      WGGGGW
-      WWWWGW
-      WGGGGW
-      WGWWWW
-      WGGGGW
+    grid: createGrid(7, 7, `
+      WWWWWWW
+      WGGGGGW
+      WWWWWWW
+      WGGGGGW
+      WWWWWWW
+      WGGGGGW
+      WWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[5, 4]],
-    functionLimits: [20, 0, 0, 0, 0],
-    instructions: { en: "Snake path requires 17 steps. Limit increased to 20.", fr: "Le chemin en serpent nécessite 17 étapes. Limite augmentée à 20." },
-    solutions: { F1: [
-      { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, 
-      { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, 
-      { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, 
-      { action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, 
-      { action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }
-    ] }
+    stars: [[5, 5]],
+    functionLimits: [15, 0, 0, 0, 0],
+    instructions: { en: "The Snake. No logic slots for every move, use functions?", fr: "Le Serpent. Pas de slots pour chaque move, utilisez les fonctions ?" },
+    solutions: {}
   },
   {
     id: 6,
-    grid: createGrid(7, 7, `
-      WWWWWWW
-      WGGGGGW
-      WGWWWGW
-      WGWGGGW
-      WGWWWWW
-      WGGGGGW
-      WWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[5, 4]],
-    functionLimits: [12, 12, 0, 0, 0],
-    instructions: { en: "Helper functions are key.", fr: "Les fonctions d'aide sont la clé." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }],
-      F2: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }]
-    }
-  },
-  {
-    id: 7,
-    grid: createGrid(7, 7, `
-      WWWWWWW
-      WBBBBBW
-      WGWGWWW
-      WGWGWWW
-      WGWGGGW
-      WGWGWWW
-      WGGGGGW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[6, 4]],
-    functionLimits: [10, 10, 0, 0, 0],
-    instructions: { en: "While on Blue, move forward.", fr: "Tant que sur le Bleu, avancez." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: 'BLUE' }, { action: 'RIGHT', condition: null }, { action: 'F2', condition: null }],
-      F2: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }]
-    }
-  },
-  {
-    id: 8,
     grid: createGrid(8, 8, `
       WWWWWWWW
       WGGGGGGW
@@ -164,30 +117,66 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 1]],
-    functionLimits: [10, 0, 0, 0, 0],
-    instructions: { en: "Recursion: Use F1 to call itself.", fr: "Récursion : utilisez F1 pour s'appeler elle-même." },
+    functionLimits: [4, 0, 0, 0, 0],
+    instructions: { en: "Recursive Square: F1 calling itself.", fr: "Carré récursif : F1 s'appelant elle-même." },
     solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }] }
   },
   {
-    id: 9,
+    id: 7,
     grid: createGrid(8, 8, `
       WWWWWWWW
       WGGGGGGW
-      WGWBBWGW
-      WGBWWBGW
-      WGBWWBGW
-      WGWBBWGW
+      WGBBBBGW
+      WGBBBBGW
+      WGBBBBGW
+      WGBBBBGW
       WGGGGGGW
       WWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[1, 6], [6, 6], [6, 1]],
-    functionLimits: [10, 10, 0, 0, 0],
-    instructions: { en: "Conditional recursion.", fr: "Récursion conditionnelle." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'F2', condition: 'BLUE' }, { action: 'F1', condition: null }], 
-      F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }] 
-    }
+    stars: [[1, 6], [6, 6]],
+    functionLimits: [5, 0, 0, 0, 0],
+    instructions: { en: "While on Blue, keep going.", fr: "Tant que sur le Bleu, continuez." },
+    solutions: { F1: [{ action: 'FORWARD', condition: 'BLUE' }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }] }
+  },
+  {
+    id: 8,
+    grid: createGrid(9, 9, `
+      WWWWWWWWW
+      WGGGGGGGW
+      WGWBBBWGW
+      WGWBBBWGW
+      WGWBBBWGW
+      WGWBBBWGW
+      WGWBBBWGW
+      WGGGGGGGW
+      WWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[1, 7], [7, 7], [7, 1]],
+    functionLimits: [5, 5, 0, 0, 0],
+    instructions: { en: "Double Recursion.", fr: "Double Récursion." },
+    solutions: {}
+  },
+  {
+    id: 9,
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGRGRGRGRW
+      WGWGWGWGWW
+      WGRGRGRGRW
+      WGWGWGWGWW
+      WGRGRGRGRW
+      WGWGWGWGWW
+      WGRGRGRGRW
+      WGWGWGWGWW
+      WWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[7, 7]],
+    functionLimits: [5, 5, 0, 0, 0],
+    instructions: { en: "Pattern Master.", fr: "Maître des motifs." },
+    solutions: {}
   },
   {
     id: 10,
@@ -195,171 +184,42 @@ export const LEVELS: Level[] = [
       WWWWWWWWWW
       WGGGGGGGGW
       WGWWWWWWGW
-      WGWGGGGWGW
-      WGWGWWGWGW
-      WGWGWWGWGW
+      WGWBBBBWGW
+      WGWBBBBWGW
+      WGWBBBBWGW
       WGWGGGGWGW
       WGWWWWWWGW
       WGGGGGGGGW
       WWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[4, 4]],
-    functionLimits: [12, 12, 0, 0, 0],
-    instructions: { en: "Spirals are recursive.", fr: "Les spirales sont récursives." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'F1', condition: null }],
-      F2: [{ action: 'F1', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F2', condition: null }]
-    }
+    stars: [[5, 4]],
+    functionLimits: [8, 8, 8, 0, 0],
+    instructions: { en: "Fixed Maze. Use helper functions to navigate the blue corridor.", fr: "Labyrinthe corrigé. Utilisez les fonctions d'aide pour naviguer dans le couloir bleu." },
+    solutions: {}
   },
   {
     id: 11,
-    grid: createGrid(8, 8, `
-      WWWWWWWW
-      WGRGRGRW
-      WGWGWGWG
-      WGRGRGRW
-      WGWGWGWG
-      WGRGRGRW
-      WWWWWWWW
-      WWWWWWWW
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGRBKRBKGW
+      WGWGWGWGWW
+      WGRBKRBKGW
+      WGWGWGWGWW
+      WGRBKRBKGW
+      WGWGWGWGWW
+      WGRBKRBKGW
+      WGGGGGGGGW
+      WWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[5, 6]],
-    functionLimits: [12, 12, 0, 0, 0],
-    instructions: { en: "Zig-zag using Red.", fr: "Zig-zag avec le Rouge." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'F2', condition: 'RED' }, { action: 'F1', condition: null }],
-      F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }]
-    }
+    stars: [[8, 8]],
+    functionLimits: [10, 10, 10, 10, 10],
+    instructions: { en: "Multi-color triggers.", fr: "Déclencheurs multicolores." },
+    solutions: {}
   },
   {
     id: 12,
-    grid: createGrid(8, 8, `
-      WWWWWWWW
-      WGWWWWWW
-      WGWWWWWW
-      WGBBBBGW
-      WWWWWWGW
-      WWWWWWGW
-      WWWWWWGW
-      WWWWWWWW
-    `),
-    start: [1, 1, Direction.DOWN],
-    stars: [[6, 6]],
-    functionLimits: [12, 12, 0, 0, 0],
-    instructions: { en: "Step by step logic.", fr: "Logique étape par étape." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'F2', condition: 'BLUE' }, { action: 'F1', condition: null }],
-      F2: [{ action: 'LEFT', condition: null }, { action: 'FORWARD', condition: null }]
-    }
-  },
-  {
-    id: 13,
-    grid: createGrid(8, 8, `
-      WWWWWWWW
-      WGGGGGGW
-      WGWWWWGW
-      WGGGGGGW
-      WGWWWWGW
-      WGGGGGGW
-      WWWWWWWW
-      WWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[5, 1]],
-    functionLimits: [15, 15, 15, 0, 0],
-    instructions: { en: "Nested logic levels.", fr: "Niveaux de logique imbriqués." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'F1', condition: null }],
-      F2: [{ action: 'F1', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }, { action: 'RIGHT', condition: null }]
-    }
-  },
-  {
-    id: 14,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WGGGGGGGGW
-      WGWBBBBWGW
-      WGWBBBBWGW
-      WGWBBBBWGW
-      WGWBBBBWGW
-      WGWBBBBWGW
-      WGWWWWWWGW
-      WGGGGGGGGW
-      WWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[1, 8], [8, 8], [8, 1]],
-    functionLimits: [15, 15, 0, 0, 0],
-    instructions: { en: "Navigate the perimeter.", fr: "Naviguez sur le périmètre." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'F1', condition: null }] 
-    }
-  },
-  {
-    id: 15,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WKKKKKKKKW
-      WKWWWWWWKW
-      WKWGGGGWKW
-      WKWGKKGWKW
-      WKWGKKGWKW
-      WKWGGGGWKW
-      WKWWWWWWKW
-      WKKKKKKKKW
-      WWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[4, 4], [4, 5], [5, 4], [5, 5]],
-    functionLimits: [15, 15, 15, 0, 0],
-    instructions: { en: "Green triggers everywhere.", fr: "Déclencheurs verts partout." },
-    solutions: { 
-      F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'GREEN' }, { action: 'F1', condition: null }] 
-    }
-  },
-  {
-    id: 16,
-    grid: createGrid(6, 6, `
-      WWWWWW
-      WGGGGW
-      WGBBBW
-      WGGGGW
-      WWWWWW
-      WWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[3, 1]],
-    functionLimits: [20, 0, 0, 0, 0],
-    instructions: { en: "A long detour.", fr: "Un long détour." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
-  },
-  {
-    id: 17,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WGGGGGGGGW
-      WGWBBBBWGW
-      WGBWWWWBGW
-      WGBWGGWBGW
-      WGBWGGWBGW
-      WGBWWWWBGW
-      WGWBBBBWGW
-      WGGGGGGGGW
-      WWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[4, 4], [4, 5], [5, 4], [5, 5]],
-    functionLimits: [20, 20, 20, 0, 0],
-    instructions: { en: "Complex maze logic.", fr: "Logique de labyrinthe complexe." },
-    solutions: {
-        F1: [{action: 'FORWARD', condition: null}, {action: 'F1', condition: null}],
-        F2: [{action: 'F1', condition: null}, {action: 'RIGHT', condition: 'BLUE'}, {action: 'F2', condition: null}]
-    }
-  },
-  {
-    id: 18,
     grid: createGrid(12, 12, `
       WWWWWWWWWWWW
       WGGGGGGGGGGW
@@ -376,123 +236,96 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 6]],
-    functionLimits: [25, 25, 25, 25, 25],
-    instructions: { en: "Deep nested conditions.", fr: "Conditions imbriquées profondes." },
-    solutions: {
-        F1: [{action: 'FORWARD', condition: null}, {action: 'RIGHT', condition: 'BLUE'}, {action: 'RIGHT', condition: 'RED'}, {action: 'F1', condition: null}]
-    }
-  },
-  {
-    id: 19,
-    grid: createGrid(8, 8, `
-      WWWWWWWW
-      WGGGGGGW
-      WGBBBBGW
-      WGBBBBGW
-      WGBBBBGW
-      WGBBBBGW
-      WGGGGGGW
-      WWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[1, 6], [6, 6], [6, 1]],
-    functionLimits: [20, 20, 0, 0, 0],
-    instructions: { en: "Border traversal logic.", fr: "Logique de traversée de bordure." },
-    solutions: {
-        F1: [{action: 'FORWARD', condition: null}, {action: 'RIGHT', condition: 'BLUE'}, {action: 'F1', condition: null}]
-    }
-  },
-  {
-    id: 20,
-    grid: createGrid(12, 12, `
-      WWWWWWWWWWWW
-      WGGGGGGGGGGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGWBBBBBBWGW
-      WGGGGGGGGGGW
-      WWWWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[5, 5], [6, 6]],
-    functionLimits: [25, 25, 25, 25, 25],
-    instructions: { en: "Master of conditional loops.", fr: "Maître des boucles conditionnelles." },
-    solutions: {
-        F1: [{action: 'FORWARD', condition: null}, {action: 'F1', condition: null}],
-        F2: [{action: 'F1', condition: null}, {action: 'RIGHT', condition: 'BLUE'}, {action: 'F2', condition: null}]
-    }
-  },
-  {
-    id: 21,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WGGGGGGGGW
-      WWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[1, 8], [8, 8], [8, 1], [4, 4]],
-    functionLimits: [30, 30, 30, 30, 30],
-    instructions: { en: "Efficiency challenge.", fr: "Défi d'efficacité." },
+    functionLimits: [12, 12, 12, 12, 12],
+    instructions: { en: "Inner Sanctuary.", fr: "Sanctuaire Intérieur." },
     solutions: {}
   },
   {
-    id: 22,
+    id: 13,
     grid: createGrid(10, 10, `
       WWWWWWWWWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
+      WGGGGGGGGW
+      WGWBBBBWGW
+      WGBWWWBWGW
+      WGBWGWGWGW
+      WGBWGWGWGW
+      WGBWWWWWGW
+      WGWBBBBWGW
+      WGGGGGGGGW
       WWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[7, 7]],
-    functionLimits: [20, 20, 20, 20, 20],
-    instructions: { en: "Checkered patterns.", fr: "Motifs en damier." },
-    solutions: {
-        F1: [{action: 'FORWARD', condition: null}, {action: 'RIGHT', condition: 'RED'}, {action: 'F1', condition: null}]
-    }
-  },
-  {
-    id: 23,
-    grid: createGrid(12, 12, `
-      WWWWWWWWWWWW
-      WGGGGGGGGGGW
-      WGWBBBBBBWGW
-      WGWBRRRRRBWGW
-      WGWBRWGGWRBWGW
-      WGWBRWGGWRBWGW
-      WGWBRRRRRBWGW
-      WGWBBBBBBWGW
-      WGGGGGGGGGGW
-      WWWWWWWWWWWW
-      WWWWWWWWWWWW
-      WWWWWWWWWWWW
-    `),
-    start: [1, 1, Direction.RIGHT],
-    stars: [[5, 5]],
-    functionLimits: [25, 25, 25, 25, 25],
-    instructions: { en: "Reach the inner sanctuary.", fr: "Atteignez le sanctuaire intérieur." },
+    stars: [[4, 4], [4, 6]],
+    functionLimits: [10, 10, 10, 0, 0],
+    instructions: { en: "The Eye.", fr: "L'Œil." },
     solutions: {}
   },
   {
-    id: 24,
+    id: 14,
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGGGGGGGGW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WBBBBBBBBW
+      WWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[8, 8]],
+    functionLimits: [4, 0, 0, 0, 0],
+    instructions: { en: "Minimalism. Use the blue field wisely.", fr: "Minimalisme. Utilisez le champ bleu avec sagesse." },
+    solutions: {}
+  },
+  {
+    id: 15,
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGGGGGGGGGGW
+      WGBBBBBBBBGW
+      WGBWWWWWWWBW
+      WGBWGGGGGGKW
+      WGBWGWKKKKKW
+      WGBWGWKWWWWW
+      WGBWGWKWWWWW
+      WGBWGGKWWWWW
+      WGBBBBKWWWWW
+      WGGGGGGWWWWW
+      WWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[8, 5]],
+    functionLimits: [12, 12, 12, 12, 12],
+    instructions: { en: "The Labyrinth.", fr: "Le Labyrinthe." },
+    solutions: {}
+  },
+  {
+    id: 16,
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGGGGGGGGGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGWWWWWWGGW
+      WGGGGGGGGGGW
+      WWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[5, 1], [5, 10], [1, 5], [10, 5]],
+    functionLimits: [8, 8, 8, 0, 0],
+    instructions: { en: "The Compass.", fr: "La Boussole." },
+    solutions: {}
+  },
+  {
+    id: 17,
     grid: createGrid(14, 14, `
       WWWWWWWWWWWWWW
       WGGGGGGGGGGGGW
@@ -511,8 +344,164 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 6], [7, 7]],
-    functionLimits: [30, 30, 30, 30, 30],
-    instructions: { en: "The Penultimate Challenge.", fr: "Le défi pénultième." },
+    functionLimits: [15, 15, 15, 15, 15],
+    instructions: { en: "Onion Layers.", fr: "Couches d'Oignon." },
+    solutions: {}
+  },
+  {
+    id: 18,
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGGGGGGGGGGW
+      WGWWWWWWWWGW
+      WGWBBBBBBWGW
+      WGWGWWWWGWGW
+      WGWGWWWWGWGW
+      WGWGWWWWGWGW
+      WGWGWWWWGWGW
+      WGWBBBBBBWGW
+      WGWWWWWWWWGW
+      WGGGGGGGGGGW
+      WWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[1, 10], [10, 10], [10, 1], [4, 4]],
+    functionLimits: [10, 10, 10, 10, 10],
+    instructions: { en: "Nested Squares.", fr: "Carrés Imbriqués." },
+    solutions: {}
+  },
+  {
+    id: 19,
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGGGGGGGGW
+      WGWWWWWWGW
+      WGWBBBBWGW
+      WGWBRRRWGW
+      WGWBRRRWGW
+      WGWBBBBWGW
+      WGWWWWWWGW
+      WGGGGGGGGW
+      WWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[4, 4], [5, 5]],
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "Core Breach.", fr: "Brèche du Noyau." },
+    solutions: {}
+  },
+  {
+    id: 20,
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGGGGGGGGGGW
+      WGWBBBBBBWGW
+      WGWBRRRRRBWGW
+      WGWBRWKKKRBWGW
+      WGWBRWKGGKRBWGW
+      WGWBRWKKKRBWGW
+      WGWBRRRRRBWGW
+      WGWBBBBBBWGW
+      WGWWWWWWWWGW
+      WGGGGGGGGGGW
+      WWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[5, 6]],
+    functionLimits: [15, 15, 15, 15, 15],
+    instructions: { en: "The Rainbow Spiral.", fr: "La Spirale Arc-en-ciel." },
+    solutions: {}
+  },
+  {
+    id: 21,
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WGGGGGGGGW
+      WWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[1, 8], [8, 8], [8, 1], [4, 4]],
+    functionLimits: [15, 15, 15, 15, 15],
+    instructions: { en: "Open Field Efficiency.", fr: "Efficacité en champ libre." },
+    solutions: {}
+  },
+  {
+    id: 22,
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGRGRGRGRGRW
+      WGWGWGWGWGWW
+      WGRGRGRGRGRW
+      WGWGWGWGWGWW
+      WGRGRGRGRGRW
+      WGWGWGWGWGWW
+      WGRGRGRGRGRW
+      WGWGWGWGWGWW
+      WGRGRGRGRGRW
+      WGGGGGGGGGGW
+      WWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[10, 10]],
+    functionLimits: [10, 10, 10, 0, 0],
+    instructions: { en: "The Grid. Recursion is your only hope.", fr: "La Grille. La récursion est votre seul espoir." },
+    solutions: {}
+  },
+  {
+    id: 23,
+    grid: createGrid(15, 15, `
+      WWWWWWWWWWWWWWW
+      WGGGGGGGGGGGGGW
+      WGWBBBBBBBBBBWGW
+      WGWBRRRRRRRRRBWGW
+      WGWBRWKKKKKKWRBWGW
+      WGWBRWKWGGGGWRBWGW
+      WGWBRWKWGWBBWRBWGW
+      WGWBRWKWGWSBWRBWGW
+      WGWBRWKWGWBBWRBWGW
+      WGWBRWKWGGGGWRBWGW
+      WGWBRWKKKKKKWRBWGW
+      WGWBRRRRRRRRRBWGW
+      WGWBBBBBBBBBBWGW
+      WGGGGGGGGGGGGGW
+      WWWWWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[7, 7]],
+    functionLimits: [20, 20, 20, 20, 20],
+    instructions: { en: "Deep Recursion.", fr: "Récursion Profonde." },
+    solutions: {}
+  },
+  {
+    id: 24,
+    grid: createGrid(15, 15, `
+      WWWWWWWWWWWWWWW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WGGGGGGGGGGGGGW
+      WWWWWWWWWWWWWWW
+    `),
+    start: [1, 1, Direction.RIGHT],
+    stars: [[7, 7], [1, 1], [1, 13], [13, 1], [13, 13]],
+    functionLimits: [10, 10, 10, 10, 10],
+    instructions: { en: "The Star of Stars.", fr: "L'Étoile des Étoiles." },
     solutions: {}
   },
   {
@@ -532,12 +521,12 @@ export const LEVELS: Level[] = [
       WGWBRRRRRRRRRBWGW
       WGWBBBBBBBBBBWGW
       WGGGGGGGGGGGGGW
-      WWWWWWWWWWWWWWA
+      WWWWWWWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[7, 7]],
-    functionLimits: [40, 40, 40, 40, 40],
-    instructions: { en: "Final Test: Ultimate Logic.", fr: "Test Final : Logique Ultime." },
+    functionLimits: [15, 15, 15, 15, 15],
+    instructions: { en: "The Final Logic Test.", fr: "Le Test de Logique Final." },
     solutions: {}
   }
 ];

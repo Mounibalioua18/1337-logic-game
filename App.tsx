@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Direction, CellType, Level, CommandInstance, ExecutionState, ActionType, ConditionType } from './types';
 import { LEVELS, CELL_COLORS } from './constants';
 
@@ -10,7 +10,6 @@ const CursorArrow = ({ className, style }: { className?: string, style?: React.C
 );
 
 const App: React.FC = () => {
-  // Game State
   const [currentLevelIdx, setCurrentLevelIdx] = useState(0);
   const [unlockedLevel, setUnlockedLevel] = useState(1);
   const [functions, setFunctions] = useState<Record<string, (CommandInstance | null)[]>>({
@@ -18,7 +17,6 @@ const App: React.FC = () => {
   });
   const [selectedSlot, setSelectedSlot] = useState<{ fn: string, idx: number } | null>(null);
   
-  // Execution UI State
   const [execState, setExecState] = useState<ExecutionState>({
     pos: [0, 0],
     dir: Direction.UP,
@@ -31,18 +29,33 @@ const App: React.FC = () => {
   const isRunningRef = useRef(false);
   const level = LEVELS[currentLevelIdx] || LEVELS[0];
 
+  // Load progress and functions on mount
   useEffect(() => {
-    const saved = localStorage.getItem('1337_logic_unlocked');
-    if (saved) setUnlockedLevel(parseInt(saved, 10));
+    const savedUnlock = localStorage.getItem('1337_logic_unlocked');
+    if (savedUnlock) {
+      const unlock = parseInt(savedUnlock, 10);
+      setUnlockedLevel(unlock);
+      setCurrentLevelIdx(unlock - 1);
+    }
   }, []);
 
-  // Initialize slots
+  // Sync functions with localStorage and Level changes
   useEffect(() => {
+    const savedFns = localStorage.getItem(`1337_fns_lvl_${level.id}`);
     const init: Record<string, (CommandInstance | null)[]> = {};
+    const parsedSaved = savedFns ? JSON.parse(savedFns) : null;
+
     ['F1', 'F2', 'F3', 'F4', 'F5'].forEach((f, i) => {
       const limit = level.functionLimits[i] || 0;
-      init[f] = new Array(limit).fill(null);
+      if (parsedSaved && parsedSaved[f]) {
+        // Restore saved, but respect current level limits
+        init[f] = parsedSaved[f].slice(0, limit);
+        while (init[f].length < limit) init[f].push(null);
+      } else {
+        init[f] = new Array(limit).fill(null);
+      }
     });
+
     setFunctions(init);
     setExecState({
       pos: [level.start[0], level.start[1]],
@@ -52,10 +65,16 @@ const App: React.FC = () => {
       status: 'IDLE'
     });
     
-    // Find first available function to select
     const firstFn = Object.keys(init).sort().find(k => (level.functionLimits[parseInt(k[1])-1] || 0) > 0);
     setSelectedSlot(firstFn ? { fn: firstFn, idx: 0 } : null);
   }, [level]);
+
+  // Save functions when they change
+  useEffect(() => {
+    if (Object.values(functions).some(arr => arr.length > 0)) {
+      localStorage.setItem(`1337_fns_lvl_${level.id}`, JSON.stringify(functions));
+    }
+  }, [functions, level.id]);
 
   const handleActionClick = (action: ActionType) => {
     if (!selectedSlot) return;
@@ -95,7 +114,7 @@ const App: React.FC = () => {
   const run = async () => {
     if (isRunningRef.current) {
       stopRef.current = true;
-      await new Promise(r => setTimeout(r, 100));
+      return;
     }
 
     stopRef.current = false;
@@ -105,7 +124,7 @@ const App: React.FC = () => {
     let currentDir = level.start[2];
     let starsSet = new Set<string>();
     let totalStepsExecuted = 0;
-    const MAX_TOTAL_STEPS = 1000;
+    const MAX_TOTAL_STEPS = 2000;
     const history: CommandInstance[] = [];
 
     setExecState({
@@ -124,31 +143,26 @@ const App: React.FC = () => {
         if (stopRef.current) return false;
         if (!cmd) continue;
         
-        // Loop for conditional commands (While logic)
-        // If no condition, it runs exactly once.
-        // If condition exists, it loops until the condition fails.
         let iteration = 0;
         while (true) {
           if (stopRef.current) return false;
           
-          // EVAL CONDITION: Check current tile color
           if (cmd.condition) {
             const currentCell = level.grid[currentPos[0]][currentPos[1]] as CellType;
             const match = (cmd.condition === 'RED' && currentCell === CellType.RED) ||
                           (cmd.condition === 'BLUE' && currentCell === CellType.BLUE) ||
                           (cmd.condition === 'GREEN' && currentCell === CellType.GREEN);
-            if (!match) break; // Condition not met (or no longer met), move to next command slot
-          } else {
-            // No condition: only run once
-            if (iteration > 0) break;
+            if (!match) break;
+          } else if (iteration > 0) {
+            break;
           }
           iteration++;
 
           if (cmd.action.startsWith('F') && cmd.action.length === 2) {
+            if (totalStepsExecuted++ > MAX_TOTAL_STEPS) return false;
             const won = await executeRecursive(cmd.action);
             if (won) return true;
           } else {
-            // Atomic Action
             if (totalStepsExecuted++ > MAX_TOTAL_STEPS) return false;
 
             if (cmd.action === 'FORWARD') {
@@ -158,7 +172,6 @@ const App: React.FC = () => {
               else if (currentDir === Direction.DOWN) nr++;
               else if (currentDir === Direction.LEFT) nc--;
 
-              // Collision check
               if (nr < 0 || nr >= level.grid.length || nc < 0 || nc >= level.grid[0].length || level.grid[nr][nc] === CellType.WALL) {
                 return false;
               }
@@ -178,10 +191,10 @@ const App: React.FC = () => {
               pos: [...currentPos], 
               dir: currentDir, 
               collectedStars: new Set(starsSet),
-              history: [...history]
+              history: [...history].slice(-20) // Only keep last 20 for performance UI
             }));
             
-            await new Promise(r => setTimeout(r, 150));
+            await new Promise(r => setTimeout(r, 100));
 
             if (starsSet.size === level.stars.length) {
               setExecState(s => ({ ...s, status: 'WON' }));
@@ -193,8 +206,8 @@ const App: React.FC = () => {
               return true;
             }
           }
-          
-          if (!cmd.condition) break; // Break loop if no condition was set
+          if (!cmd.condition) break;
+          if (iteration > 50) break; // Infinite turn loop safety
         }
       }
       return false;
@@ -326,20 +339,8 @@ const App: React.FC = () => {
               );
             }))}
           </div>
-
-          <div className="w-full max-w-4xl">
-            <h3 className="text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Execution History</h3>
-            <div className="bg-white rounded-2xl p-3 flex items-center gap-2 overflow-x-auto min-h-[72px] shadow-sm border border-slate-200">
-               <div className="px-3 text-slate-300 opacity-50 flex-shrink-0">
-                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="4" viewBox="0 0 24 24"><path d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
-               </div>
-               {execState.history.map((cmd, i) => (
-                 <div key={i} className="flex-shrink-0 scale-90 opacity-80 animate-in fade-in slide-in-from-right-2">
-                   <CommandBox cmd={cmd} />
-                 </div>
-               ))}
-               {execState.history.length === 0 && <span className="text-slate-300 text-xs font-bold italic ml-2">Idle...</span>}
-            </div>
+          <div className="text-center italic text-slate-400 text-xs mt-2 px-10">
+            {level.instructions.en}
           </div>
         </div>
 
@@ -358,7 +359,6 @@ const App: React.FC = () => {
                       key={a} 
                       onClick={() => handleActionClick(a)} 
                       className="w-14 h-14 rounded-2xl bg-slate-50 border-2 border-slate-100 flex items-center justify-center hover:border-blue-400 hover:text-blue-500 hover:bg-white transition-all shadow-sm active:scale-90"
-                      title={a}
                     >
                       {renderIcon(a, "w-8 h-8")}
                     </button>
