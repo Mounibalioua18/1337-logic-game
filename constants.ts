@@ -2,14 +2,14 @@
 import { Direction, Level, CellType, CommandInstance } from './types';
 
 export const CELL_COLORS = {
-  [CellType.EMPTY]: 'bg-slate-100',
-  [CellType.WALL]: 'bg-slate-200',
-  [CellType.PATH]: 'bg-emerald-400',
+  [CellType.EMPTY]: 'bg-slate-900',
+  [CellType.WALL]: 'bg-slate-800',
+  [CellType.PATH]: 'bg-slate-700',
   [CellType.RED]: 'bg-red-500',
-  [CellType.BLUE]: 'bg-blue-500',
+  [CellType.BLUE]: 'bg-blue-600',
   [CellType.GREEN]: 'bg-emerald-600',
-  [CellType.STAR]: 'bg-emerald-400',
-  [CellType.GOAL]: 'bg-emerald-400'
+  [CellType.STAR]: 'bg-slate-700',
+  [CellType.GOAL]: 'bg-slate-700'
 };
 
 const createGrid = (rows: number, cols: number, data: string): string[][] => {
@@ -34,8 +34,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[1, 4]],
-    functionLimits: [5, 0, 0, 0, 0],
-    instructions: { en: "Warm up: Move forward.", fr: "Échauffement : Avancez." },
+    functionLimits: [3, 0, 0, 0, 0],
+    instructions: { en: "Warm up: Standard movement.", fr: "Échauffement : Mouvement standard." },
     solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
   },
   {
@@ -43,16 +43,16 @@ export const LEVELS: Level[] = [
     grid: createGrid(6, 6, `
       WWWWWW
       WGGGGW
-      WGWGWW
+      WWWWGW
       WGGGGW
       WWWWWW
       WWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[3, 1]],
-    functionLimits: [10, 0, 0, 0, 0],
-    instructions: { en: "Zig and zag.", fr: "Ziguez et zaguez." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }] }
+    functionLimits: [8, 0, 0, 0, 0],
+    instructions: { en: "Navigate the 'Z' path.", fr: "Naviguez sur le chemin en 'Z'." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }] }
   },
   {
     id: 3,
@@ -66,42 +66,49 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[3, 1]],
-    functionLimits: [5, 0, 0, 0, 0],
-    instructions: { en: "Use BLUE to turn right automatically.", fr: "Utilisez le BLEU pour tourner à droite automatiquement." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'FORWARD', condition: null }] }
+    functionLimits: [4, 0, 0, 0, 0],
+    instructions: { en: "Blue = Conditional Right Turn.", fr: "Bleu = Virage à droite conditionnel." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'F1', condition: null }] }
   },
   {
     id: 4,
-    grid: createGrid(6, 6, `
-      WWWWWW
-      WRGGGW
-      WGWGWW
-      WGKGGW
-      WWWWWW
-      WWWWWW
+    grid: createGrid(7, 7, `
+      WWWWWWW
+      WGGGGGW
+      WGWGWWW
+      WGGGGGW
+      WWWWGWW
+      WGGGGGW
+      WWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[3, 3]],
-    functionLimits: [6, 0, 0, 0, 0],
-    instructions: { en: "Red for Right, Green for Left.", fr: "Rouge pour Droite, Vert pour Gauche." },
-    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'RED' }, { action: 'LEFT', condition: 'GREEN' }] }
+    stars: [[5, 1]],
+    functionLimits: [5, 5, 0, 0, 0],
+    instructions: { en: "Function calls: Use F2 to modularize logic.", fr: "Appels de fonctions : Utilisez F2 pour modulariser la logique." },
+    solutions: { 
+      F1: [{ action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'F2', condition: null }],
+      F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }]
+    }
   },
   {
     id: 5,
     grid: createGrid(7, 7, `
       WWWWWWW
       WGGGGGW
-      WWWWWWW
+      WWWWWG W
       WGGGGGW
-      WWWWWWW
+      W GWWWWW
       WGGGGGW
       WWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[5, 5]],
-    functionLimits: [15, 0, 0, 0, 0],
-    instructions: { en: "The Snake. No logic slots for every move, use functions?", fr: "Le Serpent. Pas de slots pour chaque move, utilisez les fonctions ?" },
-    solutions: {}
+    functionLimits: [4, 4, 0, 0, 0],
+    instructions: { en: "The Snake: FORCE FIXED. Use recursion (F1 calling itself) to save slots.", fr: "Le Serpent : CORRIGÉ. Utilisez la récursion (F1 s'appelant elle-même) pour économiser des slots." },
+    solutions: { 
+      F1: [{ action: 'FORWARD', condition: null }, { action: 'F1', condition: null }, { action: 'F2', condition: null }],
+      F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }]
+    }
   },
   {
     id: 6,
@@ -117,27 +124,30 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 1]],
-    functionLimits: [4, 0, 0, 0, 0],
-    instructions: { en: "Recursive Square: F1 calling itself.", fr: "Carré récursif : F1 s'appelant elle-même." },
+    functionLimits: [3, 0, 0, 0, 0],
+    instructions: { en: "Recursion loop: F1 calls F1.", fr: "Boucle de récursion : F1 appelle F1." },
     solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }] }
   },
   {
     id: 7,
     grid: createGrid(8, 8, `
       WWWWWWWW
-      WGGGGGGW
       WGBBBBGW
+      WGBWWWBW
+      WGBWGWGW
+      WGBWGWGW
+      WGBWWWBW
       WGBBBBGW
-      WGBBBBGW
-      WGBBBBGW
-      WGGGGGGW
       WWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[1, 6], [6, 6]],
-    functionLimits: [5, 0, 0, 0, 0],
-    instructions: { en: "While on Blue, keep going.", fr: "Tant que sur le Bleu, continuez." },
-    solutions: { F1: [{ action: 'FORWARD', condition: 'BLUE' }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }, { action: 'F1', condition: null }] }
+    stars: [[4, 4]],
+    functionLimits: [5, 5, 0, 0, 0],
+    instructions: { en: "Spiral inward using color triggers.", fr: "Spirale vers l'intérieur en utilisant des déclencheurs de couleur." },
+    solutions: {
+        F1: [{ action: 'FORWARD', condition: null }, { action: 'F2', condition: 'BLUE' }, { action: 'F1', condition: null }],
+        F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }]
+    }
   },
   {
     id: 8,
@@ -154,29 +164,30 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[1, 7], [7, 7], [7, 1]],
-    functionLimits: [5, 5, 0, 0, 0],
-    instructions: { en: "Double Recursion.", fr: "Double Récursion." },
-    solutions: {}
+    functionLimits: [4, 4, 0, 0, 0],
+    instructions: { en: "Collect all corner stars efficiently.", fr: "Collectez toutes les étoiles de coin efficacement." },
+    solutions: { F1: [{ action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: 'BLUE' }, { action: 'F1', condition: null }] }
   },
   {
     id: 9,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WGRGRGRGRW
-      WGWGWGWGWW
-      WWWWWWWWWW
+    grid: createGrid(8, 8, `
+      WWWWWWWW
+      WGRGRGRW
+      WGWGWGWG
+      WGRGRGRW
+      WGWGWGWG
+      WGRGRGRW
+      WWWWWWWW
+      WWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[7, 7]],
-    functionLimits: [5, 5, 0, 0, 0],
-    instructions: { en: "Pattern Master.", fr: "Maître des motifs." },
-    solutions: {}
+    stars: [[5, 6]],
+    functionLimits: [4, 4, 0, 0, 0],
+    instructions: { en: "Zig-Zag using RED as a logic gate.", fr: "Zig-Zag en utilisant le ROUGE comme porte logique." },
+    solutions: { 
+        F1: [{ action: 'FORWARD', condition: null }, { action: 'F2', condition: 'RED' }, { action: 'F1', condition: null }],
+        F2: [{ action: 'RIGHT', condition: null }, { action: 'FORWARD', condition: null }, { action: 'RIGHT', condition: null }]
+    }
   },
   {
     id: 10,
@@ -185,37 +196,39 @@ export const LEVELS: Level[] = [
       WGGGGGGGGW
       WGWWWWWWGW
       WGWBBBBWGW
-      WGWBBBBWGW
-      WGWBBBBWGW
+      WGWGWWGWGW
+      WGWGWWGWGW
       WGWGGGGWGW
       WGWWWWWWGW
       WGGGGGGGGW
       WWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[5, 4]],
-    functionLimits: [8, 8, 8, 0, 0],
-    instructions: { en: "Fixed Maze. Use helper functions to navigate the blue corridor.", fr: "Labyrinthe corrigé. Utilisez les fonctions d'aide pour naviguer dans le couloir bleu." },
+    stars: [[4, 4]],
+    functionLimits: [5, 5, 5, 0, 0],
+    instructions: { en: "Fixed Maze 10: The star is reachable through the center corridor.", fr: "Labyrinthe 10 Corrigé : L'étoile est accessible via le couloir central." },
     solutions: {}
   },
   {
     id: 11,
-    grid: createGrid(10, 10, `
-      WWWWWWWWWW
-      WGRBKRBKGW
-      WGWGWGWGWW
-      WGRBKRBKGW
-      WGWGWGWGWW
-      WGRBKRBKGW
-      WGWGWGWGWW
-      WGRBKRBKGW
-      WGGGGGGGGW
-      WWWWWWWWWW
+    grid: createGrid(12, 12, `
+      WWWWWWWWWWWW
+      WGGGGGGGGGGW
+      WGBBBBBBBBGW
+      WGBWWWWWWWBW
+      WGBWGGGGGGKW
+      WGBWGWKKKKKW
+      WGBWGWKWWWWW
+      WGBWGWKWWWWW
+      WGBWGGKWWWWW
+      WGBBBBKWWWWW
+      WGGGGGGWWWWW
+      WWWWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[8, 8]],
-    functionLimits: [10, 10, 10, 10, 10],
-    instructions: { en: "Multi-color triggers.", fr: "Déclencheurs multicolores." },
+    stars: [[8, 5]],
+    functionLimits: [6, 6, 6, 0, 0],
+    instructions: { en: "The Maze of Minotaur. Blue and Green are your markers.", fr: "Le labyrinthe du Minotaure. Le Bleu et le Vert sont vos repères." },
     solutions: {}
   },
   {
@@ -236,8 +249,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 6]],
-    functionLimits: [12, 12, 12, 12, 12],
-    instructions: { en: "Inner Sanctuary.", fr: "Sanctuaire Intérieur." },
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "Inner Sanctuary: Deep nesting required.", fr: "Sanctuaire Intérieur : Imbrication profonde requise." },
     solutions: {}
   },
   {
@@ -257,7 +270,7 @@ export const LEVELS: Level[] = [
     start: [1, 1, Direction.RIGHT],
     stars: [[4, 4], [4, 6]],
     functionLimits: [10, 10, 10, 0, 0],
-    instructions: { en: "The Eye.", fr: "L'Œil." },
+    instructions: { en: "Binary Decision: Two stars, one path.", fr: "Décision binaire : Deux étoiles, un chemin." },
     solutions: {}
   },
   {
@@ -276,30 +289,28 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[8, 8]],
-    functionLimits: [4, 0, 0, 0, 0],
-    instructions: { en: "Minimalism. Use the blue field wisely.", fr: "Minimalisme. Utilisez le champ bleu avec sagesse." },
-    solutions: {}
+    functionLimits: [2, 0, 0, 0, 0],
+    instructions: { en: "Impossible Efficiency: 2 slots only.", fr: "Efficacité Impossible : 2 slots seulement." },
+    solutions: { F1: [{ action: 'FORWARD', condition: 'BLUE' }, { action: 'F1', condition: null }] }
   },
   {
     id: 15,
-    grid: createGrid(12, 12, `
-      WWWWWWWWWWWW
-      WGGGGGGGGGGW
-      WGBBBBBBBBGW
-      WGBWWWWWWWBW
-      WGBWGGGGGGKW
-      WGBWGWKKKKKW
-      WGBWGWKWWWWW
-      WGBWGWKWWWWW
-      WGBWGGKWWWWW
-      WGBBBBKWWWWW
-      WGGGGGGWWWWW
-      WWWWWWWWWWWW
+    grid: createGrid(10, 10, `
+      WWWWWWWWWW
+      WGGGGGGGGW
+      WGRRRRRRGW
+      WGRWWWWREW
+      WGRWGGWREW
+      WGRWGGWREW
+      WGRWWWWREW
+      WGRRRRRRGW
+      WGGGGGGGGW
+      WWWWWWWWWW
     `),
     start: [1, 1, Direction.RIGHT],
-    stars: [[8, 5]],
-    functionLimits: [12, 12, 12, 12, 12],
-    instructions: { en: "The Labyrinth.", fr: "Le Labyrinthe." },
+    stars: [[4, 4]],
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "Multi-layered recursion.", fr: "Récursion multi-couches." },
     solutions: {}
   },
   {
@@ -320,8 +331,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[5, 1], [5, 10], [1, 5], [10, 5]],
-    functionLimits: [8, 8, 8, 0, 0],
-    instructions: { en: "The Compass.", fr: "La Boussole." },
+    functionLimits: [10, 10, 10, 0, 0],
+    instructions: { en: "Compass Points.", fr: "Points Cardinaux." },
     solutions: {}
   },
   {
@@ -344,8 +355,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[6, 6], [7, 7]],
-    functionLimits: [15, 15, 15, 15, 15],
-    instructions: { en: "Onion Layers.", fr: "Couches d'Oignon." },
+    functionLimits: [12, 12, 12, 12, 12],
+    instructions: { en: "The Onion: Layers of conditional logic.", fr: "L'Oignon : Couches de logique conditionnelle." },
     solutions: {}
   },
   {
@@ -367,7 +378,7 @@ export const LEVELS: Level[] = [
     start: [1, 1, Direction.RIGHT],
     stars: [[1, 10], [10, 10], [10, 1], [4, 4]],
     functionLimits: [10, 10, 10, 10, 10],
-    instructions: { en: "Nested Squares.", fr: "Carrés Imbriqués." },
+    instructions: { en: "Square-in-Square Logic.", fr: "Logique Carré dans Carré." },
     solutions: {}
   },
   {
@@ -428,8 +439,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[1, 8], [8, 8], [8, 1], [4, 4]],
-    functionLimits: [15, 15, 15, 15, 15],
-    instructions: { en: "Open Field Efficiency.", fr: "Efficacité en champ libre." },
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "Open Field Optimization.", fr: "Optimisation en champ libre." },
     solutions: {}
   },
   {
@@ -450,8 +461,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[10, 10]],
-    functionLimits: [10, 10, 10, 0, 0],
-    instructions: { en: "The Grid. Recursion is your only hope.", fr: "La Grille. La récursion est votre seul espoir." },
+    functionLimits: [4, 4, 4, 0, 0],
+    instructions: { en: "The Recursive Grid.", fr: "La grille récursive." },
     solutions: {}
   },
   {
@@ -475,8 +486,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[7, 7]],
-    functionLimits: [20, 20, 20, 20, 20],
-    instructions: { en: "Deep Recursion.", fr: "Récursion Profonde." },
+    functionLimits: [12, 12, 12, 12, 12],
+    instructions: { en: "Recursive Depth Charge.", fr: "Charge de profondeur récursive." },
     solutions: {}
   },
   {
@@ -500,8 +511,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[7, 7], [1, 1], [1, 13], [13, 1], [13, 13]],
-    functionLimits: [10, 10, 10, 10, 10],
-    instructions: { en: "The Star of Stars.", fr: "L'Étoile des Étoiles." },
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "The Star Constellation.", fr: "La Constellation d'Étoiles." },
     solutions: {}
   },
   {
@@ -525,8 +536,8 @@ export const LEVELS: Level[] = [
     `),
     start: [1, 1, Direction.RIGHT],
     stars: [[7, 7]],
-    functionLimits: [15, 15, 15, 15, 15],
-    instructions: { en: "The Final Logic Test.", fr: "Le Test de Logique Final." },
+    functionLimits: [8, 8, 8, 8, 8],
+    instructions: { en: "The Final Gauntlet.", fr: "Le Défi Final." },
     solutions: {}
   }
 ];
